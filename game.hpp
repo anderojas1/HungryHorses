@@ -18,6 +18,7 @@ private:
     Jugador *persona;
     //QVector<Nodo*> *ordenarNodos(QVector <Nodo*> *nodos);
     int puntosPosicion(int i, int j);
+    bool verificarMovimiento(int i, int j, int posI, int posJ);
 
 public:
     Game();

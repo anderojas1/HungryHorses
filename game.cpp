@@ -278,7 +278,6 @@ void Game::iniciarJuego() {
 QVector<int> *Game::pensarMovimiento() {
 
     int nivel = nivelJuego*2;
-    int validar = nivel;
     QVector<Nodo*> *hijosRaiz = new QVector<Nodo*>();
 
     QVector<Nodo*> *nodos = new QVector<Nodo*>();
@@ -370,9 +369,11 @@ QVector<int> *Game::pensarMovimiento() {
                     bool movimientoValido = false;
 
                     if (turnoMaquina == true)
-                        movimientoValido = maquina->verificarMovimiento(nuevoX, nuevoY);
+                        movimientoValido = verificarMovimiento(tmp->getposXMaquina(),tmp->getposYMaquina(),
+                                                               nuevoX, nuevoY);
                     else
-                        movimientoValido = persona->verificarMovimiento(nuevoX, nuevoY);
+                        movimientoValido = verificarMovimiento(tmp->getPosXJugador(), tmp->getPosYJugador(),
+                                                               nuevoX, nuevoY);
 
                     if (movimientoValido == true) {
 
@@ -449,18 +450,27 @@ QVector<int> *Game::pensarMovimiento() {
         if (nivel % 2 == 0) {
 
             int puntos = puntosPosicion(tmp->getPosXJugador(), tmp->getPosYJugador());
-            //cout << "en (" << tmp->getPosXJugador() << "," << tmp->getPosYJugador() << ") hay " << puntos << " puntos\n";
+            cout << "Posición jugador (" << tmp->getPosXJugador() << "," << tmp->getPosYJugador() << ")\n";
 
+            cout << "Valor actual de puntos para persona: " << tmp->getValorPersona() << endl;
             tmp->setValorAcumuladoPersona(puntos + tmp->getValorPersona());
+            cout << "nuevo valor de puntos para persona: " << tmp->getValorPersona() << endl;
             tmp->setDiferenciaValor();
+            cout << "Nueva diferencia para jugador: " << tmp->getDiferenciaValor() << endl;
             //tmp->getPadre()->setValorAcumuladoPersona(tmp->getPadre()->getValorPersona()+tmp->getValorPersona());
 
 
             if (tmp->getDiferenciaValor() < tmp->getPadre()->getDiferenciaValor()) {
 
+                cout << "Diferencia en padre para jugador: " << tmp->getPadre()->getDiferenciaValor() << endl;
+                cout << "cambiando valor para jugador en padre\n";
+                cout << "Anterior: " << tmp->getPadre()->getValorPersona() << endl;
+
                 tmp->getPadre()->setValorAcumuladoPersona(tmp->getValorPersona());
+                cout << "Nuevo: " << tmp->getPadre()->getValorPersona() << endl;
                 tmp->getPadre()->setValorAcumuladoMaquina(tmp->getValorMaquina());
                 tmp->getPadre()->setDiferenciaValor(tmp->getDiferenciaValor());
+                cout << "Diferencia: " << tmp->getPadre()->getDiferenciaValor() << endl;
                 tmp->getPadre()->setCamino(tmp);
 
             }
@@ -470,16 +480,25 @@ QVector<int> *Game::pensarMovimiento() {
         else {
 
             int puntos = puntosPosicion(tmp->getposXMaquina(), tmp->getposYMaquina());
-            cout << "en (" << tmp->getposXMaquina() << "," << tmp->getposYMaquina() << ") hay " << puntos << " puntos\n";
+            cout << "Posición máquina (" << tmp->getposXMaquina() << "," << tmp->getposYMaquina() << ")\n";
 
+            cout << "Valor actual de puntos para máquina: " << tmp->getValorMaquina() << endl;
+            cout << "Valor actual para persona: " << tmp->getValorPersona() << endl;
             tmp->setValorAcumuladoMaquina(puntos + tmp->getValorMaquina());
+            cout << "nuevo valor de puntos para máquina: " << tmp->getValorMaquina() << endl;
             tmp->setDiferenciaValor();
+            cout << "Nueva diferencia para máquina: " << tmp->getDiferenciaValor() << endl;
 
             if (tmp->getDiferenciaValor() > tmp->getPadre()->getDiferenciaValor()) {
+
+                cout << "Diferencia en padre para máquina: " << tmp->getPadre()->getDiferenciaValor() << endl;
+                cout << "cambiando valor para máquina en padre\n";
+                cout << "Anterior: " << tmp->getPadre()->getValorMaquina() << endl;
 
                 tmp->getPadre()->setValorAcumuladoPersona(tmp->getValorPersona());
                 tmp->getPadre()->setValorAcumuladoMaquina(tmp->getValorMaquina());
                 tmp->getPadre()->setDiferenciaValor(tmp->getDiferenciaValor());
+                cout << "Diferencia: " << tmp->getPadre()->getDiferenciaValor() << endl;
                 tmp->getPadre()->setCamino(tmp);
 
             }
@@ -516,6 +535,16 @@ QVector<int> *Game::pensarMovimiento() {
         raiz->setCamino(hijosRaiz->at(posicion));
 
     }
+
+    /*for (int i = 0; i < nodos->size(); i++) {
+
+        cout << "Posición máquina (" << nodos->at(i)->getposXMaquina() << "," << nodos->at(i)->getposYMaquina() << ")\n";
+        cout << "Posición persona (" << nodos->at(i)->getPosXJugador() << "," << nodos->at(i)->getPosYJugador() << ")\n";
+        cout << "Puntaje acumulado persona = " << nodos->at(i)->getValorPersona() << endl;
+        cout << "Puntaje acumulado máquina = " << nodos->at(i)->getValorMaquina() << endl;
+        cout << "Puntaje acumulado = " << nodos->at(i)->getDiferenciaValor() << endl;
+
+    }*/
 
 
     cout << "La máquina opta por escoger el nodo con posición (" << raiz->getCamino()->getposXMaquina()
@@ -578,4 +607,29 @@ bool Game::terminarJuego() {
     }
 
     return false;
+}
+
+bool Game::verificarMovimiento(int x, int y, int posX, int posY) {
+
+    /* Los if verifican los movimientos en
+     * Si se cumple (el movimiento es válido) retorna true
+     * Si no retorna false
+     * */
+
+    int difX = qAbs(posX-x);
+    int difY = qAbs(posY-y);
+    int disL = difX + difY;
+
+    if (disL == 3 && (difX != 0 && difY != 0))
+        return true;
+
+    else {
+        cout << "mov no valido\n";
+        cout << "x: " << x << " y: " << y << endl;
+        cout << "jugador x: " << posX << " y: " << posY << endl;
+
+    }
+
+    return false;
+
 }

@@ -80,10 +80,6 @@ bool Jugador::verificarMovimiento(int x, int y) {
      * Si no retorna false
      * */
 
-    cout << "nuevo X: " << x << endl;
-    cout << "nuevo Y: " << y << endl;
-    cout << "actual X: " << x << endl;
-    cout << "actual Y: " << y << endl;
     int difX = qAbs(posX-x);
     int difY = qAbs(posY-y);
     int disL = difX + difY;

@@ -192,9 +192,11 @@ void MainWindow::finalizarJuego() {
     if (ganador == 2) {
 
         QString msj = "Máquina: " + QString::number(juego->getJugador(1)->getPuntaje()) + "\nUsted: " +
-                 QString::number(juego->getJugador(2)->getPuntaje()) + "\n\n¡Ha ganado!";
+                 QString::number(juego->getJugador(2)->getPuntaje()) + "\n\n¡Has ganado!";
         //const char *consmsj = msj.toStdString().c_str();
-        QMessageBox *mensaje = new QMessageBox(QMessageBox::NoIcon,"¡Felicitaciones!", msj.toStdString().c_str());
+        QMessageBox *mensaje = new QMessageBox(QMessageBox::Information,"¡Felicitaciones!", msj.toStdString().c_str(),
+                                               QMessageBox::NoButton, this,
+                                               Qt::WindowFlags(Qt::Dialog || Qt::MSWindowsFixedSizeDialogHint));
         mensaje->exec();
 
     }
@@ -202,9 +204,11 @@ void MainWindow::finalizarJuego() {
     else {
 
         QString msj = "Máquina: " + QString::number(juego->getJugador(1)->getPuntaje()) + "\nUsted: " +
-                 QString::number(juego->getJugador(2)->getPuntaje()) + "\n\n¡Vuelve a intentarlo!";
+                 QString::number(juego->getJugador(2)->getPuntaje()) + "\n\n¡Has perdido!";
         //const char *consmsj = msj.toStdString().c_str();
-        QMessageBox *mensaje = new QMessageBox(QMessageBox::NoIcon,"Has perdido", msj.toStdString().c_str());
+        QMessageBox *mensaje = new QMessageBox(QMessageBox::Critical,"¡Ríndete!", msj.toStdString().c_str(),
+                                               QMessageBox::NoButton, this,
+                                               Qt::WindowFlags(Qt::Dialog || Qt::MSWindowsFixedSizeDialogHint));
         mensaje->exec();
 
     }
