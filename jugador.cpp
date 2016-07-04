@@ -80,25 +80,17 @@ bool Jugador::verificarMovimiento(int x, int y) {
      * Si no retorna false
      * */
 
-    if (x == (posX + 2) || x == (posX - 2)) {
+    cout << "nuevo X: " << x << endl;
+    cout << "nuevo Y: " << y << endl;
+    cout << "actual X: " << x << endl;
+    cout << "actual Y: " << y << endl;
+    int difX = qAbs(posX-x);
+    int difY = qAbs(posY-y);
+    int disL = difX + difY;
+    cout << "Distancia en L es: " << disL << endl;
 
-        if (y == (posY + 1) || y == (posY - 1)) {
-
-            return true;
-
-        }
-
-    }
-
-    else if (x == (posX + 1) || x == (posX - 1)) {
-
-        if (y == (posY + 2) || y == (posY - 2)) {
-
-            return true;
-
-        }
-
-    }
+    if (disL == 3 && (difX != 0 && difY != 0))
+        return true;
 
     else {
         cout << "mov no valido\n";

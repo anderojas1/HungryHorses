@@ -6,19 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>583</width>
+    <width>750</width>
     <height>700</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>550</width>
+    <width>750</width>
     <height>700</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>600</width>
+    <width>750</width>
     <height>700</height>
    </size>
   </property>
@@ -940,6 +940,11 @@
     </attribute>
     <row>
      <property name="text">
+      <string>0</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
       <string>1</string>
      </property>
     </row>
@@ -973,11 +978,11 @@
       <string>7</string>
      </property>
     </row>
-    <row>
+    <column>
      <property name="text">
-      <string>8</string>
+      <string>0</string>
      </property>
-    </row>
+    </column>
     <column>
      <property name="text">
       <string>1</string>
@@ -1011,11 +1016,6 @@
     <column>
      <property name="text">
       <string>7</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>8</string>
      </property>
     </column>
     <item row="0" column="0">
@@ -1027,13 +1027,26 @@
      </property>
     </item>
    </widget>
+   <widget class="QPushButton" name="iniciarJuego">
+    <property name="geometry">
+     <rect>
+      <x>620</x>
+      <y>160</y>
+      <width>95</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Iniciar</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>583</width>
+     <width>750</width>
      <height>29</height>
     </rect>
    </property>
