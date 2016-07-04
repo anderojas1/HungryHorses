@@ -33,6 +33,8 @@ private:
     Game *juego;
     Ui::MainWindow *ui;
     void mostrarJuego();
+    QString get_ruta();
+    QString get_icon(int code);
     void configurarJuego();
 
 };

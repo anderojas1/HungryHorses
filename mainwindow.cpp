@@ -2,6 +2,8 @@
 #include "ui_mainwindow.h"
 #include <iostream>
 #include <QVector>
+#include <string>
+#include <QThread>
 
 using namespace std;
 
@@ -61,6 +63,7 @@ void MainWindow::on_actionLeyenda_triggered()
 
 void MainWindow::mostrarJuego() {
 
+    QString ruta = get_ruta();
     for (int i = 0; i < 8; i++) {
 
         for (int j = 0; j < 8; j++) {
@@ -70,13 +73,19 @@ void MainWindow::mostrarJuego() {
             if (campo == NULL) {
 
                 campo = new QTableWidgetItem();
+                cout<<"Valor a mostrar: "<<juego->getCampoJuego(i, j)<<endl;
                 campo->setText(QString::number(juego->getCampoJuego(i, j)));
+                //campo->setIcon(QPixmap::fromImage(QImage(ruta+"piso.png")));
+                QString icono = get_icon(juego->getCampoJuego(i, j));
+                campo->setIcon(QPixmap::fromImage(QImage(ruta+icono)));
                 ui->tableroGraficoJuego->setItem(i, j, campo);
 
             }
 
             else {
 
+                QString icono = get_icon(juego->getCampoJuego(i, j));
+                campo->setBackground(QBrush(QPixmap(ruta+icono)));
                 campo->setText(QString::number(juego->getCampoJuego(i, j)));
 
             }
@@ -88,6 +97,46 @@ void MainWindow::mostrarJuego() {
 
     }
 
+}
+
+QString MainWindow::get_ruta(){
+    QString ruta = "";
+    //definimos el perfil en el que estamos para seleccionar la ruta
+    int perfil = 1;
+
+    switch (perfil) {
+        case 0:
+            ruta = "/home/anderojas/Proyectos/HungryHorses/Iconos/";
+        break;
+        case 1:
+            ruta = "/home/alchemixt-pc/Documentos/EISC2016/Proyectos/HungryHorses/Iconos/";
+        break;
+        case 2:
+            ruta = "/home/julian/Desktop/IA/Proyecto copia /HungryHorses/Iconos/";
+        break;
+    }
+    return ruta;
+}
+QString MainWindow::get_icon(int cod){
+    QString icon = "";
+    switch (cod) {
+    case 1:
+        icon = "c_blanco.png";
+        break;
+    case 2:
+        icon = "c_negro.png";
+        break;
+    case 3:
+        icon = "pasto.png";
+        break;
+    case 4:
+        icon = "flor.png";
+        break;
+    default:
+        icon = "piso.png";
+        break;
+    }
+    return icon;
 }
 
 void MainWindow::on_tableroGraficoJuego_cellClicked(int row, int column)
