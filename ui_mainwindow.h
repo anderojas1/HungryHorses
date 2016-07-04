@@ -69,7 +69,7 @@ public:
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         puntajeMaquina = new QLCDNumber(centralWidget);
         puntajeMaquina->setObjectName(QStringLiteral("puntajeMaquina"));
-        puntajeMaquina->setGeometry(QRect(120, 0, 64, 23));
+        puntajeMaquina->setGeometry(QRect(670, 110, 64, 23));
         QPalette palette;
         QBrush brush(QColor(0, 0, 0, 255));
         brush.setStyle(Qt::SolidPattern);
@@ -138,7 +138,7 @@ public:
         puntajeMaquina->setProperty("intValue", QVariant(0));
         puntajeJugador = new QLCDNumber(centralWidget);
         puntajeJugador->setObjectName(QStringLiteral("puntajeJugador"));
-        puntajeJugador->setGeometry(QRect(450, 0, 64, 23));
+        puntajeJugador->setGeometry(QRect(670, 70, 64, 23));
         QPalette palette1;
         palette1.setBrush(QPalette::Active, QPalette::WindowText, brush);
         QBrush brush9(QColor(170, 55, 55, 255));
@@ -198,10 +198,10 @@ public:
         puntajeJugador->setPalette(palette1);
         label = new QLabel(centralWidget);
         label->setObjectName(QStringLiteral("label"));
-        label->setGeometry(QRect(10, 0, 111, 21));
+        label->setGeometry(QRect(590, 110, 111, 21));
         nickJugador = new QLabel(centralWidget);
         nickJugador->setObjectName(QStringLiteral("nickJugador"));
-        nickJugador->setGeometry(QRect(320, 0, 111, 21));
+        nickJugador->setGeometry(QRect(590, 70, 111, 21));
         tableroGraficoJuego = new QTableWidget(centralWidget);
         if (tableroGraficoJuego->columnCount() < 8)
             tableroGraficoJuego->setColumnCount(8);
@@ -243,7 +243,7 @@ public:
         __qtablewidgetitem16->setFlags(Qt::ItemIsSelectable);
         tableroGraficoJuego->setItem(0, 0, __qtablewidgetitem16);
         tableroGraficoJuego->setObjectName(QStringLiteral("tableroGraficoJuego"));
-        tableroGraficoJuego->setGeometry(QRect(0, 30, 581, 591));
+        tableroGraficoJuego->setGeometry(QRect(0, 0, 581, 591));
         QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
@@ -260,11 +260,11 @@ public:
         tableroGraficoJuego->verticalHeader()->setDefaultSectionSize(70);
         iniciarJuego = new QPushButton(centralWidget);
         iniciarJuego->setObjectName(QStringLiteral("iniciarJuego"));
-        iniciarJuego->setGeometry(QRect(620, 160, 95, 31));
+        iniciarJuego->setGeometry(QRect(620, 30, 95, 31));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 583, 22));
+        menuBar->setGeometry(QRect(0, 0, 750, 22));
         menuHungry_Horses = new QMenu(menuBar);
         menuHungry_Horses->setObjectName(QStringLiteral("menuHungry_Horses"));
         menuNivel_de_Juego = new QMenu(menuHungry_Horses);
@@ -278,9 +278,11 @@ public:
         MainWindow->setStatusBar(statusBar);
 
         menuBar->addAction(menuHungry_Horses->menuAction());
-        menuHungry_Horses->addAction(actionSalir);
         menuHungry_Horses->addSeparator();
         menuHungry_Horses->addAction(menuNivel_de_Juego->menuAction());
+        menuHungry_Horses->addAction(actionSalir);
+        menuHungry_Horses->addSeparator();
+        menuHungry_Horses->addSeparator();
         menuNivel_de_Juego->addAction(actionPrincipiante);
         menuNivel_de_Juego->addAction(actionAmateur);
         menuNivel_de_Juego->addAction(actionProfesional);
@@ -293,14 +295,14 @@ public:
 
     void retranslateUi(QMainWindow *MainWindow)
     {
-        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0));
+        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "HungryHorses", 0));
         actionSalir->setText(QApplication::translate("MainWindow", "Salir", 0));
         actionPrincipiante->setText(QApplication::translate("MainWindow", "Principiante", 0));
         actionAmateur->setText(QApplication::translate("MainWindow", "Amateur", 0));
         actionProfesional->setText(QApplication::translate("MainWindow", "Experto", 0));
         actionLeyenda->setText(QApplication::translate("MainWindow", "Leyenda", 0));
-        label->setText(QApplication::translate("MainWindow", "Puntaje M\303\241quina", 0));
-        nickJugador->setText(QApplication::translate("MainWindow", "Puntaje jugador", 0));
+        label->setText(QApplication::translate("MainWindow", "M\303\241quina", 0));
+        nickJugador->setText(QApplication::translate("MainWindow", "Jugador", 0));
         QTableWidgetItem *___qtablewidgetitem = tableroGraficoJuego->horizontalHeaderItem(0);
         ___qtablewidgetitem->setText(QApplication::translate("MainWindow", "0", 0));
         QTableWidgetItem *___qtablewidgetitem1 = tableroGraficoJuego->horizontalHeaderItem(1);
