@@ -33,9 +33,10 @@ private slots:
 
 private:
     Game *juego;
+    QString ruta;
     Ui::MainWindow *ui;
     void mostrarJuego();
-    QString get_ruta();
+    void get_ruta();
     QString get_icon(int code);
     void configurarJuego();
     void actualizarJuego(QVector <int> *posiciones, int player = 1);

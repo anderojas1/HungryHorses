@@ -4,7 +4,8 @@
 #include <QVector>
 #include <string>
 #include <QThread>
-
+#include <QInputDialog>
+#include <QFileDialog>
 #include <QMessageBox>
 
 using namespace std;
@@ -14,6 +15,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    get_ruta();
+    ruta += "/";
     juego = new Game();
     nivel = 0;
 }
@@ -70,7 +73,6 @@ void MainWindow::on_actionLeyenda_triggered()
 
 void MainWindow::mostrarJuego() {
 
-    QString ruta = get_ruta();
     for (int i = 0; i < 8; i++) {
 
         for (int j = 0; j < 8; j++) {
@@ -106,10 +108,27 @@ void MainWindow::mostrarJuego() {
 
 }
 
-QString MainWindow::get_ruta(){
-    QString ruta = "";
+void MainWindow::get_ruta(){
+
     //definimos el perfil en el que estamos para seleccionar la ruta
-    int perfil = 0;
+        int perfil = 0;
+
+        bool ok;
+        QInputDialog* inputDialog = new QInputDialog();
+        inputDialog->setOptions(QInputDialog::NoButtons);
+
+        QString text =  inputDialog->getText(this ,"QInputDialog::getText() Example",
+                                              "Escoja su perfil\n"
+                                              "0) Anderson\n"
+                                              "1) Jhon Erik\n"
+                                              "2) Julián\n"
+                                              "3) Otro", QLineEdit::Normal,"", &ok);
+
+         if (ok && !text.isEmpty())
+         {
+            perfil = text.toInt();
+         }
+    //definimos el perfil en el que estamos para seleccionar la ruta
 
     switch (perfil) {
         case 0:
@@ -121,8 +140,13 @@ QString MainWindow::get_ruta(){
         case 2:
             ruta = "/home/julian/Desktop/IA/Proyecto copia /HungryHorses/Iconos/";
         break;
+        case 3:
+            ruta = QFileDialog::getExistingDirectory(this, tr("Abrir directorio iconos"), "/home", QFileDialog::ShowDirsOnly);
+        break;
+        default:
+            ruta = "/home/anderojas/Proyectos/HungryHorses/Iconos/";
+        break;
     }
-    return ruta;
 }
 QString MainWindow::get_icon(int cod){
     QString icon = "";
@@ -199,7 +223,6 @@ void MainWindow::on_iniciarJuego_clicked()
 void MainWindow::actualizarJuego(QVector<int> *posiciones, int player) {
 
     cout << "tamaño del vector de posiciones: " << posiciones->size() << endl;
-    QString ruta = get_ruta();
 
     // Se obtienen las anteriores posiciones del jugador a partir del vector
     int antX = posiciones->at(0);
