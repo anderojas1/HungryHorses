@@ -19,6 +19,7 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTableWidget>
 #include <QtWidgets/QToolBar>
@@ -40,6 +41,7 @@ public:
     QLabel *label;
     QLabel *nickJugador;
     QTableWidget *tableroGraficoJuego;
+    QPushButton *iniciarJuego;
     QMenuBar *menuBar;
     QMenu *menuHungry_Horses;
     QMenu *menuNivel_de_Juego;
@@ -50,9 +52,9 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(583, 700);
-        MainWindow->setMinimumSize(QSize(550, 700));
-        MainWindow->setMaximumSize(QSize(600, 700));
+        MainWindow->resize(750, 700);
+        MainWindow->setMinimumSize(QSize(750, 700));
+        MainWindow->setMaximumSize(QSize(750, 700));
         actionSalir = new QAction(MainWindow);
         actionSalir->setObjectName(QStringLiteral("actionSalir"));
         actionPrincipiante = new QAction(MainWindow);
@@ -256,6 +258,9 @@ public:
         tableroGraficoJuego->horizontalHeader()->setMinimumSectionSize(100);
         tableroGraficoJuego->horizontalHeader()->setProperty("showSortIndicator", QVariant(true));
         tableroGraficoJuego->verticalHeader()->setDefaultSectionSize(70);
+        iniciarJuego = new QPushButton(centralWidget);
+        iniciarJuego->setObjectName(QStringLiteral("iniciarJuego"));
+        iniciarJuego->setGeometry(QRect(620, 160, 95, 31));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
@@ -297,42 +302,43 @@ public:
         label->setText(QApplication::translate("MainWindow", "Puntaje M\303\241quina", 0));
         nickJugador->setText(QApplication::translate("MainWindow", "Puntaje jugador", 0));
         QTableWidgetItem *___qtablewidgetitem = tableroGraficoJuego->horizontalHeaderItem(0);
-        ___qtablewidgetitem->setText(QApplication::translate("MainWindow", "1", 0));
+        ___qtablewidgetitem->setText(QApplication::translate("MainWindow", "0", 0));
         QTableWidgetItem *___qtablewidgetitem1 = tableroGraficoJuego->horizontalHeaderItem(1);
-        ___qtablewidgetitem1->setText(QApplication::translate("MainWindow", "2", 0));
+        ___qtablewidgetitem1->setText(QApplication::translate("MainWindow", "1", 0));
         QTableWidgetItem *___qtablewidgetitem2 = tableroGraficoJuego->horizontalHeaderItem(2);
-        ___qtablewidgetitem2->setText(QApplication::translate("MainWindow", "3", 0));
+        ___qtablewidgetitem2->setText(QApplication::translate("MainWindow", "2", 0));
         QTableWidgetItem *___qtablewidgetitem3 = tableroGraficoJuego->horizontalHeaderItem(3);
-        ___qtablewidgetitem3->setText(QApplication::translate("MainWindow", "4", 0));
+        ___qtablewidgetitem3->setText(QApplication::translate("MainWindow", "3", 0));
         QTableWidgetItem *___qtablewidgetitem4 = tableroGraficoJuego->horizontalHeaderItem(4);
-        ___qtablewidgetitem4->setText(QApplication::translate("MainWindow", "5", 0));
+        ___qtablewidgetitem4->setText(QApplication::translate("MainWindow", "4", 0));
         QTableWidgetItem *___qtablewidgetitem5 = tableroGraficoJuego->horizontalHeaderItem(5);
-        ___qtablewidgetitem5->setText(QApplication::translate("MainWindow", "6", 0));
+        ___qtablewidgetitem5->setText(QApplication::translate("MainWindow", "5", 0));
         QTableWidgetItem *___qtablewidgetitem6 = tableroGraficoJuego->horizontalHeaderItem(6);
-        ___qtablewidgetitem6->setText(QApplication::translate("MainWindow", "7", 0));
+        ___qtablewidgetitem6->setText(QApplication::translate("MainWindow", "6", 0));
         QTableWidgetItem *___qtablewidgetitem7 = tableroGraficoJuego->horizontalHeaderItem(7);
-        ___qtablewidgetitem7->setText(QApplication::translate("MainWindow", "8", 0));
+        ___qtablewidgetitem7->setText(QApplication::translate("MainWindow", "7", 0));
         QTableWidgetItem *___qtablewidgetitem8 = tableroGraficoJuego->verticalHeaderItem(0);
-        ___qtablewidgetitem8->setText(QApplication::translate("MainWindow", "1", 0));
+        ___qtablewidgetitem8->setText(QApplication::translate("MainWindow", "0", 0));
         QTableWidgetItem *___qtablewidgetitem9 = tableroGraficoJuego->verticalHeaderItem(1);
-        ___qtablewidgetitem9->setText(QApplication::translate("MainWindow", "2", 0));
+        ___qtablewidgetitem9->setText(QApplication::translate("MainWindow", "1", 0));
         QTableWidgetItem *___qtablewidgetitem10 = tableroGraficoJuego->verticalHeaderItem(2);
-        ___qtablewidgetitem10->setText(QApplication::translate("MainWindow", "3", 0));
+        ___qtablewidgetitem10->setText(QApplication::translate("MainWindow", "2", 0));
         QTableWidgetItem *___qtablewidgetitem11 = tableroGraficoJuego->verticalHeaderItem(3);
-        ___qtablewidgetitem11->setText(QApplication::translate("MainWindow", "4", 0));
+        ___qtablewidgetitem11->setText(QApplication::translate("MainWindow", "3", 0));
         QTableWidgetItem *___qtablewidgetitem12 = tableroGraficoJuego->verticalHeaderItem(4);
-        ___qtablewidgetitem12->setText(QApplication::translate("MainWindow", "5", 0));
+        ___qtablewidgetitem12->setText(QApplication::translate("MainWindow", "4", 0));
         QTableWidgetItem *___qtablewidgetitem13 = tableroGraficoJuego->verticalHeaderItem(5);
-        ___qtablewidgetitem13->setText(QApplication::translate("MainWindow", "6", 0));
+        ___qtablewidgetitem13->setText(QApplication::translate("MainWindow", "5", 0));
         QTableWidgetItem *___qtablewidgetitem14 = tableroGraficoJuego->verticalHeaderItem(6);
-        ___qtablewidgetitem14->setText(QApplication::translate("MainWindow", "7", 0));
+        ___qtablewidgetitem14->setText(QApplication::translate("MainWindow", "6", 0));
         QTableWidgetItem *___qtablewidgetitem15 = tableroGraficoJuego->verticalHeaderItem(7);
-        ___qtablewidgetitem15->setText(QApplication::translate("MainWindow", "8", 0));
+        ___qtablewidgetitem15->setText(QApplication::translate("MainWindow", "7", 0));
 
         const bool __sortingEnabled = tableroGraficoJuego->isSortingEnabled();
         tableroGraficoJuego->setSortingEnabled(false);
         tableroGraficoJuego->setSortingEnabled(__sortingEnabled);
 
+        iniciarJuego->setText(QApplication::translate("MainWindow", "Iniciar", 0));
         menuHungry_Horses->setTitle(QApplication::translate("MainWindow", "Hungry Horses", 0));
         menuNivel_de_Juego->setTitle(QApplication::translate("MainWindow", "Nivel de Juego", 0));
     } // retranslateUi

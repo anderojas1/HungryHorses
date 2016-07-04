@@ -5,6 +5,8 @@
 #include <string>
 #include <QThread>
 
+#include <QMessageBox>
+
 using namespace std;
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -13,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     juego = new Game();
+    nivel = 0;
 }
 
 MainWindow::~MainWindow()
@@ -28,6 +31,7 @@ void MainWindow::on_actionSalir_triggered()
 void MainWindow::on_actionPrincipiante_triggered()
 {
     // Nivel 1 es principiante
+    nivel = 1;
     juego->setNivelJuego(1);
     mostrarJuego();
     configurarJuego();
@@ -37,6 +41,7 @@ void MainWindow::on_actionPrincipiante_triggered()
 void MainWindow::on_actionAmateur_triggered()
 {
     // Nivel 2 es amateur
+    nivel = 2;
     juego->setNivelJuego(2);
     mostrarJuego();
     configurarJuego();
@@ -46,6 +51,7 @@ void MainWindow::on_actionAmateur_triggered()
 void MainWindow::on_actionProfesional_triggered()
 {
     // Nivel 3 es experto
+    nivel = 3;
     juego->setNivelJuego(3);
     mostrarJuego();
     configurarJuego();
@@ -55,6 +61,7 @@ void MainWindow::on_actionProfesional_triggered()
 void MainWindow::on_actionLeyenda_triggered()
 {
     // Nivel 4 es leyenda
+    nivel = 4;
     juego->setNivelJuego(4);
     mostrarJuego();
     configurarJuego();
@@ -148,23 +155,27 @@ void MainWindow::on_tableroGraficoJuego_cellClicked(int row, int column)
 
     if (posiciones->size() > 0) {
 
-        // Se obtiene el ítem del tablero y se grafica la nueva posición
-        QTableWidgetItem *campo = ui->tableroGraficoJuego->item(row, column);
-        campo->setText(QString::number(2));
+        actualizarJuego(posiciones, 2);
 
-        // Se obtienen las anteriores posiciones del jugador a partir del vector
-        int antX = posiciones->at(0);
-        int antY = posiciones->at(1);
+        if (juego->terminarJuego() == false) {
 
-        // Se cambia la posición anterior del jugador y se marca como vacía
-        QTableWidgetItem *anteriorCampo = ui->tableroGraficoJuego->item(antX, antY);
-        anteriorCampo->setText(QString::number(0));
+            // Después de ejecutar la jugada por parte de la persona, crear automáticamente el arbol para la máquina
+            actualizarJuego(juego->pensarMovimiento());
 
-        ui->puntajeJugador->display(juego->getJugador(2)->getPuntaje());
+            if (juego->terminarJuego() == true) {
+
+                finalizarJuego();
+
+            }
+
+        } else {
+
+            finalizarJuego();
+
+        }
 
     }
 
-    // Después de ejecutar la jugada por parte de la persona, crear automáticamente el arbol para la máquina
 }
 
 void MainWindow::configurarJuego() {
@@ -173,4 +184,80 @@ void MainWindow::configurarJuego() {
     ui->puntajeJugador->display(juego->getJugador(2)->getPuntaje());
     ui->puntajeMaquina->display(juego->getJugador(1)->getPuntaje());
 
+}
+
+void MainWindow::on_iniciarJuego_clicked()
+{
+    jugarMaquina();
+    ui->iniciarJuego->setEnabled(false);
+
+}
+
+void MainWindow::actualizarJuego(QVector<int> *posiciones, int player) {
+
+    cout << "tamaño del vector de posiciones: " << posiciones->size() << endl;
+
+    // Se obtienen las anteriores posiciones del jugador a partir del vector
+    int antX = posiciones->at(0);
+    int antY = posiciones->at(1);
+
+    // Se obtienen las nuevas posiciones
+    int x = posiciones->at(2);
+    int y = posiciones->at(3);
+
+    // Se obtiene el ítem del tablero y se grafica la nueva posición
+    QTableWidgetItem *campo = ui->tableroGraficoJuego->item(x, y);
+    campo->setText(QString::number(player));
+
+
+
+    // Se cambia la posición anterior del jugador y se marca como vacía
+    QTableWidgetItem *anteriorCampo = ui->tableroGraficoJuego->item(antX, antY);
+    anteriorCampo->setText(QString::number(0));
+
+    if (player == 2)
+        ui->puntajeJugador->display(juego->getJugador(player)->getPuntaje());
+    else
+        ui->puntajeMaquina->display(juego->getJugador(player)->getPuntaje());
+
+}
+
+void MainWindow::jugarMaquina() {
+
+    QVector <int> *posiciones = juego->pensarMovimiento();
+    actualizarJuego(posiciones);
+
+}
+
+void MainWindow::finalizarJuego() {
+
+    int ganador = 1;
+
+    if (juego->getJugador(2)->getPuntaje() > juego->getJugador(1)->getPuntaje()) {
+
+        ganador = 2;
+
+    }
+
+    if (ganador == 2) {
+
+        QString msj = "Máquina: " + QString::number(juego->getJugador(1)->getPuntaje()) + "\nUsted: " +
+                 QString::number(juego->getJugador(2)->getPuntaje()) + "\n\n¡Ha ganado!";
+        //const char *consmsj = msj.toStdString().c_str();
+        QMessageBox *mensaje = new QMessageBox(QMessageBox::NoIcon,"¡Felicitaciones!", msj.toStdString().c_str());
+        mensaje->exec();
+
+    }
+
+    else {
+
+        QString msj = "Máquina: " + QString::number(juego->getJugador(1)->getPuntaje()) + "\nUsted: " +
+                 QString::number(juego->getJugador(2)->getPuntaje()) + "\n\n¡Vuelve a intentarlo!";
+        //const char *consmsj = msj.toStdString().c_str();
+        QMessageBox *mensaje = new QMessageBox(QMessageBox::NoIcon,"Has perdido", msj.toStdString().c_str());
+        mensaje->exec();
+
+    }
+
+    exit(0);
 }

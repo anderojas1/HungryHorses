@@ -29,6 +29,8 @@ private slots:
 
     void on_tableroGraficoJuego_cellClicked(int row, int column);
 
+    void on_iniciarJuego_clicked();
+
 private:
     Game *juego;
     Ui::MainWindow *ui;
@@ -36,6 +38,10 @@ private:
     QString get_ruta();
     QString get_icon(int code);
     void configurarJuego();
+    void actualizarJuego(QVector <int> *posiciones, int player = 1);
+    void finalizarJuego();
+    void jugarMaquina();
+    int nivel;
 
 };
 

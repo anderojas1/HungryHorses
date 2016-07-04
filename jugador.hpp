@@ -18,13 +18,13 @@ public:
     void setNombre(QString id);
     void setPosicion(int x, int y);
     QVector<int> *ejecutarMovimiento(int x, int y, int valorCampo);
+    bool verificarMovimiento(int x, int y);
 
 private:
     int puntaje;
     QString nombre;
     int posX;
     int posY;
-    bool verificarMovimiento(int x, int y);
 };
 
 #endif // JUGADOR_H

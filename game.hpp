@@ -2,19 +2,22 @@
 #define GAME_HPP
 
 #include "jugador.hpp"
+#include "nodo.hpp"
 #include <QVector>
 
 class Game {
 
 private:
     int nivelJuego;
-    int campoJuego[8][8];
+    QVector<QVector<int>*> *campoJuego;
     void crearFlores();
     void crearPasto();
     void asignarPosiciones();
     void iniciarCampo();
     Jugador *maquina;
     Jugador *persona;
+    //QVector<Nodo*> *ordenarNodos(QVector <Nodo*> *nodos);
+    int puntosPosicion(int i, int j);
 
 public:
     Game();
@@ -25,7 +28,9 @@ public:
     int getCampoJuego(int i, int j);
     QVector<int>* moverFicha(int i, int j, int jugador);
     Jugador *getJugador(int opt);
-    QVector <int> *pensarMovimiento();
+    QVector<int> *pensarMovimiento();
+    void iniciarJuego();
+    bool terminarJuego();
 };
 
 #endif // GAME_HPP
