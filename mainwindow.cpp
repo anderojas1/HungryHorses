@@ -134,10 +134,10 @@ QString MainWindow::get_icon(int cod){
         icon = "c_negro.png";
         break;
     case 3:
-        icon = "pasto.png";
+        icon = "flor.png";
         break;
     case 4:
-        icon = "flor.png";
+        icon = "pasto.png";
         break;
     default:
         icon = "piso.png";
