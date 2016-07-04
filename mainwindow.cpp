@@ -135,6 +135,7 @@ QString MainWindow::get_icon(int cod){
         break;
     case 3:
         icon = "flor.png";
+        break;
     case 4:
         icon = "pasto.png";
         break;
