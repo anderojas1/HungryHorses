@@ -81,10 +81,10 @@ void MainWindow::mostrarJuego() {
 
                 campo = new QTableWidgetItem();
                 cout<<"Valor a mostrar: "<<juego->getCampoJuego(i, j)<<endl;
-                campo->setText(QString::number(juego->getCampoJuego(i, j)));
+                //campo->setText(QString::number(juego->getCampoJuego(i, j)));
                 //campo->setIcon(QPixmap::fromImage(QImage(ruta+"piso.png")));
                 QString icono = get_icon(juego->getCampoJuego(i, j));
-                campo->setIcon(QPixmap::fromImage(QImage(ruta+icono)));
+                campo->setBackground(QBrush(QPixmap(ruta+icono)));
                 ui->tableroGraficoJuego->setItem(i, j, campo);
 
             }
@@ -93,7 +93,7 @@ void MainWindow::mostrarJuego() {
 
                 QString icono = get_icon(juego->getCampoJuego(i, j));
                 campo->setBackground(QBrush(QPixmap(ruta+icono)));
-                campo->setText(QString::number(juego->getCampoJuego(i, j)));
+                //campo->setText(QString::number(juego->getCampoJuego(i, j)));
 
             }
 
@@ -196,6 +196,7 @@ void MainWindow::on_iniciarJuego_clicked()
 void MainWindow::actualizarJuego(QVector<int> *posiciones, int player) {
 
     cout << "tamaño del vector de posiciones: " << posiciones->size() << endl;
+    QString ruta = get_ruta();
 
     // Se obtienen las anteriores posiciones del jugador a partir del vector
     int antX = posiciones->at(0);
@@ -207,13 +208,17 @@ void MainWindow::actualizarJuego(QVector<int> *posiciones, int player) {
 
     // Se obtiene el ítem del tablero y se grafica la nueva posición
     QTableWidgetItem *campo = ui->tableroGraficoJuego->item(x, y);
-    campo->setText(QString::number(player));
+    QString icono1 = get_icon(juego->getCampoJuego(x, y));
+    campo->setBackground(QBrush(QPixmap(ruta+icono1)));
+    //campo->setText(QString::number(player));
 
 
 
     // Se cambia la posición anterior del jugador y se marca como vacía
     QTableWidgetItem *anteriorCampo = ui->tableroGraficoJuego->item(antX, antY);
-    anteriorCampo->setText(QString::number(0));
+    QString icono2 = get_icon(juego->getCampoJuego(antX, antY));
+    anteriorCampo->setBackground(QBrush(QPixmap(ruta+icono2)));
+    //anteriorCampo->setText(QString::number(0));
 
     if (player == 2)
         ui->puntajeJugador->display(juego->getJugador(player)->getPuntaje());
