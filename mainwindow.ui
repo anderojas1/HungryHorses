@@ -926,14 +926,32 @@
       <height>750</height>
      </size>
     </property>
+    <property name="baseSize">
+     <size>
+      <width>20</width>
+      <height>20</height>
+     </size>
+    </property>
     <property name="sizeAdjustPolicy">
      <enum>QAbstractScrollArea::AdjustIgnored</enum>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>20</width>
+      <height>20</height>
+     </size>
+    </property>
+    <property name="showGrid">
+     <bool>true</bool>
     </property>
     <attribute name="horizontalHeaderDefaultSectionSize">
      <number>70</number>
     </attribute>
     <attribute name="horizontalHeaderMinimumSectionSize">
      <number>100</number>
+    </attribute>
+    <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+     <bool>true</bool>
     </attribute>
     <attribute name="verticalHeaderDefaultSectionSize">
      <number>70</number>
@@ -1046,8 +1064,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>750</width>
-     <height>29</height>
+     <width>583</width>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuHungry_Horses">

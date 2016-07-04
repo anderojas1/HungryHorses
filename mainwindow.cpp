@@ -2,6 +2,9 @@
 #include "ui_mainwindow.h"
 #include <iostream>
 #include <QVector>
+#include <string>
+#include <QThread>
+
 #include <QMessageBox>
 
 using namespace std;
@@ -67,6 +70,7 @@ void MainWindow::on_actionLeyenda_triggered()
 
 void MainWindow::mostrarJuego() {
 
+    QString ruta = get_ruta();
     for (int i = 0; i < 8; i++) {
 
         for (int j = 0; j < 8; j++) {
@@ -76,14 +80,20 @@ void MainWindow::mostrarJuego() {
             if (campo == NULL) {
 
                 campo = new QTableWidgetItem();
-                campo->setText(QString::number(juego->getCampoJuego(i, j)));
+                cout<<"Valor a mostrar: "<<juego->getCampoJuego(i, j)<<endl;
+                //campo->setText(QString::number(juego->getCampoJuego(i, j)));
+                //campo->setIcon(QPixmap::fromImage(QImage(ruta+"piso.png")));
+                QString icono = get_icon(juego->getCampoJuego(i, j));
+                campo->setBackground(QBrush(QPixmap(ruta+icono)));
                 ui->tableroGraficoJuego->setItem(i, j, campo);
 
             }
 
             else {
 
-                campo->setText(QString::number(juego->getCampoJuego(i, j)));
+                QString icono = get_icon(juego->getCampoJuego(i, j));
+                campo->setBackground(QBrush(QPixmap(ruta+icono)));
+                //campo->setText(QString::number(juego->getCampoJuego(i, j)));
 
             }
 
@@ -94,6 +104,46 @@ void MainWindow::mostrarJuego() {
 
     }
 
+}
+
+QString MainWindow::get_ruta(){
+    QString ruta = "";
+    //definimos el perfil en el que estamos para seleccionar la ruta
+    int perfil = 0;
+
+    switch (perfil) {
+        case 0:
+            ruta = "/home/anderojas/Proyectos/HungryHorses/Iconos/";
+        break;
+        case 1:
+            ruta = "/home/alchemixt-pc/Documentos/EISC2016/Proyectos/HungryHorses/Iconos/";
+        break;
+        case 2:
+            ruta = "/home/julian/Desktop/IA/Proyecto copia /HungryHorses/Iconos/";
+        break;
+    }
+    return ruta;
+}
+QString MainWindow::get_icon(int cod){
+    QString icon = "";
+    switch (cod) {
+    case 1:
+        icon = "c_blanco.png";
+        break;
+    case 2:
+        icon = "c_negro.png";
+        break;
+    case 4:
+        icon = "pasto.png";
+        break;
+    case 3:
+        icon = "flor.png";
+        break;
+    default:
+        icon = "piso.png";
+        break;
+    }
+    return icon;
 }
 
 void MainWindow::on_tableroGraficoJuego_cellClicked(int row, int column)
@@ -134,6 +184,9 @@ void MainWindow::configurarJuego() {
     ui->puntajeJugador->display(juego->getJugador(2)->getPuntaje());
     ui->puntajeMaquina->display(juego->getJugador(1)->getPuntaje());
 
+    if (ui->iniciarJuego->isEnabled() == false)
+        ui->iniciarJuego->setEnabled(true);
+
 }
 
 void MainWindow::on_iniciarJuego_clicked()
@@ -146,6 +199,7 @@ void MainWindow::on_iniciarJuego_clicked()
 void MainWindow::actualizarJuego(QVector<int> *posiciones, int player) {
 
     cout << "tamaño del vector de posiciones: " << posiciones->size() << endl;
+    QString ruta = get_ruta();
 
     // Se obtienen las anteriores posiciones del jugador a partir del vector
     int antX = posiciones->at(0);
@@ -157,13 +211,17 @@ void MainWindow::actualizarJuego(QVector<int> *posiciones, int player) {
 
     // Se obtiene el ítem del tablero y se grafica la nueva posición
     QTableWidgetItem *campo = ui->tableroGraficoJuego->item(x, y);
-    campo->setText(QString::number(player));
+    QString icono1 = get_icon(juego->getCampoJuego(x, y));
+    campo->setBackground(QBrush(QPixmap(ruta+icono1)));
+    //campo->setText(QString::number(player));
 
 
 
     // Se cambia la posición anterior del jugador y se marca como vacía
     QTableWidgetItem *anteriorCampo = ui->tableroGraficoJuego->item(antX, antY);
-    anteriorCampo->setText(QString::number(0));
+    QString icono2 = get_icon(juego->getCampoJuego(antX, antY));
+    anteriorCampo->setBackground(QBrush(QPixmap(ruta+icono2)));
+    //anteriorCampo->setText(QString::number(0));
 
     if (player == 2)
         ui->puntajeJugador->display(juego->getJugador(player)->getPuntaje());

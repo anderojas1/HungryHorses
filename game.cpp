@@ -277,10 +277,12 @@ void Game::iniciarJuego() {
 
 QVector<int> *Game::pensarMovimiento() {
 
+    int contadorNodos = 0;
     int nivel = nivelJuego*2;
     QVector<Nodo*> *hijosRaiz = new QVector<Nodo*>();
 
     QVector<Nodo*> *nodos = new QVector<Nodo*>();
+    QVector<Nodo*> *evaluacionNodos = new QVector<Nodo*>();
 
     int xM = maquina->getPosX();
     int yM = maquina->getPosY();
@@ -289,7 +291,9 @@ QVector<int> *Game::pensarMovimiento() {
     int yJ = persona->getPosY();
 
     Nodo *raiz = new Nodo(xM, yM, xJ, yJ, 0, 0, NULL, nivel, NULL, 1);
+    raiz->setDiferenciaValor(-100000);
     raiz->setEstadoJuego(campoJuego);
+    raiz->setCodigo(contadorNodos++);
 
     nodos->append(raiz);
 
@@ -297,7 +301,9 @@ QVector<int> *Game::pensarMovimiento() {
 
     while (nivel > 0) {
 
-        Nodo *tmp = nodos->first();
+        //cout << "Mostrando elementos de nivel " << nivel << endl;
+
+        Nodo *tmp = nodos->last();
 
         bool turnoMaquina = true;
 
@@ -358,9 +364,11 @@ QVector<int> *Game::pensarMovimiento() {
             int nuevoX = posiciones->at(contador++);
             int nuevoY = posiciones->at(contador++);
 
-            if (nuevoX >= 0 && nuevoX < 8 && nuevoY >= 0 && nuevoY < 8) {
+            if (nuevoX >= 0 && nuevoX < 8 && nuevoY >= 0 && nuevoY < 8
+                    && !(nuevoX == tmp->getPosXJugador() && nuevoY == tmp->getPosYJugador())
+                    && !(nuevoX == tmp->getposXMaquina() && nuevoY == tmp->getposYMaquina())) {
 
-                cout << "evaluando posiciones (" << nuevoX << "," << nuevoY << ")\n";
+                //cout << "evaluando posiciones (" << nuevoX << "," << nuevoY << ")\n";
 
                 int codigo = tmp->getEstadoJuego()->at(nuevoX)->at(nuevoY);
 
@@ -383,23 +391,11 @@ QVector<int> *Game::pensarMovimiento() {
                                                        0, 0, tmp, (tmp->getProfundidad()+1), NULL, 1);
 
                             nuevoNodo->setEstadoJuego(tmp->getEstadoJuego(), nuevoX, nuevoY, 1);
-
-                            if (nivel % 2 == 0) {
-
-                                nuevoNodo->setDiferenciaValor(-100000);
-
-                            }
-
-                            else {
-
-                                nuevoNodo->setDiferenciaValor(100000);
-
-                            }
+                            nuevoNodo->setCodigo(contadorNodos++);
+                            nuevoNodo->setDiferenciaValor(100000);
 
                             nodos->push_front(nuevoNodo);
 
-                            if (raiz->getCamino() == NULL)
-                                //raiz->setCamino(nuevoNodo);
                             if (raiz == tmp)
                                hijosRaiz->append(nuevoNodo);
 
@@ -411,18 +407,8 @@ QVector<int> *Game::pensarMovimiento() {
                                                        0, 0, tmp, (tmp->getProfundidad()+1), NULL, 2);
 
                             nuevoNodo->setEstadoJuego(tmp->getEstadoJuego(), nuevoX, nuevoY, 1);
-
-                            if (nivel % 2 == 0) {
-
-                                nuevoNodo->setDiferenciaValor(-100000);
-
-                            }
-
-                            else {
-
-                                nuevoNodo->setDiferenciaValor(100000);
-
-                            }
+                            nuevoNodo->setCodigo(contadorNodos++);
+                            nuevoNodo->setDiferenciaValor(-100000);
 
                             nodos->push_front(nuevoNodo);
 
@@ -430,47 +416,69 @@ QVector<int> *Game::pensarMovimiento() {
 
                     }
 
+                } else {
+
+                    cout << "Posición ocupada. Jugador = " << codigo << endl;
                 }
 
+            } else {
+
+                //cout << "Desbordamiento. Posición (" << nuevoX << "," << nuevoY << ")" << endl;
             }
 
         }
 
         posiciones->clear();
-        nivel--;
+        nodos->remove(nodos->size()-1);
+        evaluacionNodos->push_front(tmp);
+        if (tmp->getProfundidad() < nodos->last()->getProfundidad())
+            nivel--;
     }
 
+    for (int i = 0; i < nodos->size(); i++)
+        evaluacionNodos->push_front(nodos->at(i));
+
+
     nivel = nivelJuego*2;
-    cout << "nivel: " << nivel << endl;
+    //cout << "nivel: " << nivel << endl;
 
-    for (int i = 0; i < nodos->size()-1; i++) {
+    for (int i = 0; i < evaluacionNodos->size()-1; i++) {
 
-        Nodo *tmp = nodos->at(i);
+        Nodo *tmp = evaluacionNodos->at(i);
+
+        cout << "Nivel: " << nivel << endl;
+
+        //cout << "Mostrando información del nodo con código: " << tmp->getCodigo() << endl;
 
         if (nivel % 2 == 0) {
 
             int puntos = puntosPosicion(tmp->getPosXJugador(), tmp->getPosYJugador());
-            cout << "Posición jugador (" << tmp->getPosXJugador() << "," << tmp->getPosYJugador() << ")\n";
+            /*cout << "Posición jugador (" << tmp->getPosXJugador() << "," << tmp->getPosYJugador() << ")\n";
+            cout << "Viene desde nodo de código " << tmp->getPadre()->getCodigo() << " con posición ("
+                 << tmp->getPadre()->getPosXJugador() << ","
+                 << tmp->getPadre()->getPosYJugador() << ") que tiene diferencia de "
+                 << tmp->getPadre()->getDiferenciaValor() << endl;*/
 
-            cout << "Valor actual de puntos para persona: " << tmp->getValorPersona() << endl;
+            //cout << "Valor actual de puntos para persona: " << tmp->getValorPersona() << endl;
             tmp->setValorAcumuladoPersona(puntos + tmp->getValorPersona());
-            cout << "nuevo valor de puntos para persona: " << tmp->getValorPersona() << endl;
+            //cout << "nuevo valor de puntos para persona: " << tmp->getValorPersona() << endl;
             tmp->setDiferenciaValor();
-            cout << "Nueva diferencia para jugador: " << tmp->getDiferenciaValor() << endl;
+            //cout << "Nueva diferencia para jugador: " << tmp->getDiferenciaValor() << endl;
             //tmp->getPadre()->setValorAcumuladoPersona(tmp->getPadre()->getValorPersona()+tmp->getValorPersona());
 
 
             if (tmp->getDiferenciaValor() < tmp->getPadre()->getDiferenciaValor()) {
 
+                /*cout << "Modificando información del nodo padre con código: " << tmp->getPadre()->getCodigo() << endl;
                 cout << "Diferencia en padre para jugador: " << tmp->getPadre()->getDiferenciaValor() << endl;
                 cout << "cambiando valor para jugador en padre\n";
-                cout << "Anterior: " << tmp->getPadre()->getValorPersona() << endl;
+                cout << "Anterior: " << tmp->getPadre()->getValorPersona() << endl;*/
 
                 tmp->getPadre()->setValorAcumuladoPersona(tmp->getValorPersona());
-                cout << "Nuevo: " << tmp->getPadre()->getValorPersona() << endl;
+                //cout << "Nuevo: " << tmp->getPadre()->getValorPersona() << endl;
                 tmp->getPadre()->setValorAcumuladoMaquina(tmp->getValorMaquina());
                 tmp->getPadre()->setDiferenciaValor(tmp->getDiferenciaValor());
-                cout << "Diferencia: " << tmp->getPadre()->getDiferenciaValor() << endl;
+                //cout << "Diferencia: " << tmp->getPadre()->getDiferenciaValor() << endl;
                 tmp->getPadre()->setCamino(tmp);
 
             }
@@ -480,32 +488,36 @@ QVector<int> *Game::pensarMovimiento() {
         else {
 
             int puntos = puntosPosicion(tmp->getposXMaquina(), tmp->getposYMaquina());
-            cout << "Posición máquina (" << tmp->getposXMaquina() << "," << tmp->getposYMaquina() << ")\n";
+            /*cout << "Posición máquina (" << tmp->getposXMaquina() << "," << tmp->getposYMaquina() << ")\n";
+            cout << "Viene desde nodo de código " << tmp->getPadre()->getCodigo() << " con posición ("
+                 << tmp->getPadre()->getposXMaquina() << ","
+                 << tmp->getPadre()->getposYMaquina() << ") que tiene diferencia de "
+                 << tmp->getPadre()->getDiferenciaValor() << endl;
 
             cout << "Valor actual de puntos para máquina: " << tmp->getValorMaquina() << endl;
-            cout << "Valor actual para persona: " << tmp->getValorPersona() << endl;
+            cout << "Valor actual para persona: " << tmp->getValorPersona() << endl;*/
             tmp->setValorAcumuladoMaquina(puntos + tmp->getValorMaquina());
-            cout << "nuevo valor de puntos para máquina: " << tmp->getValorMaquina() << endl;
+            //cout << "nuevo valor de puntos para máquina: " << tmp->getValorMaquina() << endl;
             tmp->setDiferenciaValor();
-            cout << "Nueva diferencia para máquina: " << tmp->getDiferenciaValor() << endl;
+            //cout << "Nueva diferencia para máquina: " << tmp->getDiferenciaValor() << endl;
 
             if (tmp->getDiferenciaValor() > tmp->getPadre()->getDiferenciaValor()) {
 
-                cout << "Diferencia en padre para máquina: " << tmp->getPadre()->getDiferenciaValor() << endl;
+                /*cout << "Diferencia en padre para máquina: " << tmp->getPadre()->getDiferenciaValor() << endl;
                 cout << "cambiando valor para máquina en padre\n";
-                cout << "Anterior: " << tmp->getPadre()->getValorMaquina() << endl;
+                cout << "Anterior: " << tmp->getPadre()->getValorMaquina() << endl;*/
 
                 tmp->getPadre()->setValorAcumuladoPersona(tmp->getValorPersona());
                 tmp->getPadre()->setValorAcumuladoMaquina(tmp->getValorMaquina());
                 tmp->getPadre()->setDiferenciaValor(tmp->getDiferenciaValor());
-                cout << "Diferencia: " << tmp->getPadre()->getDiferenciaValor() << endl;
+                //cout << "Diferencia: " << tmp->getPadre()->getDiferenciaValor() << endl;
                 tmp->getPadre()->setCamino(tmp);
 
             }
 
         }
 
-        if (tmp->getProfundidad() > nodos->at(i+1)->getProfundidad())
+        if (tmp->getProfundidad() > evaluacionNodos->at(i+1)->getProfundidad())
             nivel--;
 
     }
@@ -548,8 +560,8 @@ QVector<int> *Game::pensarMovimiento() {
 
 
     cout << "La máquina opta por escoger el nodo con posición (" << raiz->getCamino()->getposXMaquina()
-         << "," << raiz->getCamino()->getposYMaquina() << ") porque le otorga "
-         << raiz->getValorMaquina() << " punto(s)\n";
+         << "," << raiz->getCamino()->getposYMaquina() << ") porque le otorga una diferencia de "
+         << raiz->getDiferenciaValor() << " punto(s)\n";
 
     return moverFicha(raiz->getCamino()->getposXMaquina(), raiz->getCamino()->getposYMaquina(), 1);
 

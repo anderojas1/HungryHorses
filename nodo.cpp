@@ -165,3 +165,14 @@ QVector<QVector<int>*> *Nodo::getEstadoJuego() {
     return estadoJuego;
 
 }
+
+int Nodo::getCodigo() {
+
+    return codigo;
+
+}
+
+void Nodo::setCodigo(int code) {
+
+    codigo = code;
+}

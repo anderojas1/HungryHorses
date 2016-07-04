@@ -31,7 +31,10 @@ public:
     void setEstadoJuego(QVector<QVector<int> *> *estado);
     void setEstadoJuego(QVector<QVector<int> *> *estado, int i, int j, int jugador);
     QVector<QVector<int>*> *getEstadoJuego();
-    void getJugador();
+    int getJugador();
+    int getCodigo();
+    void setCodigo(int code);
+
 
 private:
     int posXMaquina;
@@ -46,6 +49,7 @@ private:
     int profundidad;
     Nodo *camino;
     QVector <QVector<int>*> *estadoJuego;
+    int codigo;
 };
 
 #endif // NODO_H

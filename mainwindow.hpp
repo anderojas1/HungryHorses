@@ -35,6 +35,8 @@ private:
     Game *juego;
     Ui::MainWindow *ui;
     void mostrarJuego();
+    QString get_ruta();
+    QString get_icon(int code);
     void configurarJuego();
     void actualizarJuego(QVector <int> *posiciones, int player = 1);
     void finalizarJuego();
