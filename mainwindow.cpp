@@ -17,6 +17,24 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     get_ruta();
     ruta += "/";
+
+    // Imagen de fondo
+    QPixmap bkgnd(ruta+"background.jpg");
+    bkgnd = bkgnd.scaled(this->size(), Qt::IgnoreAspectRatio);
+    QPalette palette;
+    palette.setBrush(QPalette::Background, bkgnd);
+    this->setPalette(palette);
+
+    // Imagen Jugador - Marcador
+    QPixmap mypixj(ruta+"c_negro.png");
+    ui->nickJugador->setPixmap(mypixj);
+    //delete mypix;
+
+    // Imagen Maquina - Marcador
+    QPixmap mypixm(ruta+"c_blanco.png");
+    ui->nickMaquina->setPixmap(mypixm);
+    //delete mypix;
+
     juego = new Game();
     nivel = 0;
 }
@@ -148,6 +166,7 @@ void MainWindow::get_ruta(){
         break;
     }
 }
+
 QString MainWindow::get_icon(int cod){
     QString icon = "";
     switch (cod) {

@@ -3,6 +3,7 @@
 
 #include "game.hpp"
 #include <QMainWindow>
+#include <QApplication>
 
 namespace Ui {
 class MainWindow;
